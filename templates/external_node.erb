@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+set -u
+
+ENC_BASE_URL="https://<%= @console_host -%>:<%= @console_port -%>/nodes"
+
+curl -k -H "Accept: text/yaml" "${ENC_BASE_URL}/${1}"
