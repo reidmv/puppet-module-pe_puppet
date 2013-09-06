@@ -1,0 +1,12 @@
+--- 
+language: ruby
+script: 
+  - git clone -q git://github.com/puppetlabs/ghpublisher.git .forge-releng
+  - .forge-releng/publish
+env: 
+  global: 
+    - PUBLISHER_LOGIN=reidmv
+    - secure: |-
+        Z7EQV6NuVi7ESdR6Q0mVr/R0Ds/3Uc8zZ6ZCO7LhRZ1+AmT/5R5yJ8pIEV4M
+        OWdPEGfDychvxE7m4gs1bH5fWftmKLKfgp/mdth/4ToBALk//I+sAOxr8M7p
+        fhW88DcqCfarW4m4GzguyTh7dZifVzF1HsSHuBhNQ0PlI8RwFFI=
