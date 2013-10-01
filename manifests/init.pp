@@ -1,5 +1,5 @@
 class pe_puppet (
-  $config_file = hiera('pe_puppet::config_file', '/etc/puppetlabs/puppet/puppet.conf'),
+  $config_file = '/etc/puppetlabs/puppet/puppet.conf',
 ) {
 
   Ini_setting {

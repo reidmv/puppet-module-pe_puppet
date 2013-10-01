@@ -1,10 +1,10 @@
 class pe_puppet::agent (
-  $master_host = hiera('pe_puppet::agent::master_host', 'puppet'),
-  $master_port = hiera('pe_puppet::agent::master_port', '8140'),
-  $ca_host     = hiera('pe_puppet::agent::ca_host',     'puppetca'),
-  $ca_port     = hiera('pe_puppet::agent::ca_port',     '8140'),
-  $certname    = hiera('pe_puppet::agent::certname',    $::clientcert),
-  $config_file = hiera('pe_puppet::agent::config_file', '/etc/puppetlabs/puppet/puppet.conf'),
+  $master_host = 'puppet',
+  $master_port = '8140',
+  $ca_host     = 'puppetca',
+  $ca_port     = '8140',
+  $certname    = $::clientcert,
+  $config_file = '/etc/puppetlabs/puppet/puppet.conf',
 ) {
   include pe_puppet
 
@@ -56,8 +56,8 @@ class pe_puppet::agent (
   }
 
   service { 'pe-puppet-agent':
-    name    => $puppet_agent_service,
     ensure  => running,
+    name    => $puppet_agent_service,
     enable  => true,
     require => Ini_setting['puppet_agent_certname'],
   }

@@ -1,25 +1,24 @@
 ## Add inventory service params...
 ## Add storedconfig params (not enabled by default, but is configurable) [bonus points]
-
 class pe_puppet::master (
-  $ca_host              = hiera('pe_puppet::master::ca_host'),
-  $ca_port              = hiera('pe_puppet::master::ca_port', '8140'),
-  $console_host         = hiera('pe_puppet::master::console_host', undef),
-  $console_port         = hiera('pe_puppet::master::console_port', '443'),
-  $puppetdb_host        = hiera('pe_puppet::master::puppetdb_host', undef),
-  $puppetdb_port        = hiera('pe_puppet::master::puppetdb_port', '8081'),
-  $config_file          = hiera('pe_puppet::master::config_file', '/etc/puppetlabs/puppet/puppet.conf'),
-  $certname             = hiera('pe_puppet::master::certname', "pe-internal-puppetmaster.${::clientcert}"),
-  $dns_alt_names        = hiera('pe_puppet::master::dns_alt_names', "${::hostname},puppet,puppet.${::domain}"),
-  $confdir              = hiera('pe_puppet::master::confdir', '/etc/puppetlabs/puppet'),
-  $inventory_dbname     = hiera('pe_puppet::master::inventory_dbname', 'console_inventory_service'),
-  $inventory_dbuser     = hiera('pe_puppet::master::inventory_dbuser', 'console'),
-  $inventory_dbpassword = hiera('pe_puppet::master::inventory_dbpassword', undef),
-  $inventory_dbhost     = hiera('pe_puppet::master::inventory_dbhost', undef),
-  $reports              = hiera('pe_puppet::master::reports', 'https'),
-  $external_nodes       = hiera('pe_puppet::master::external_nodes', '/etc/puppetlabs/puppet-dashboard/external_node'),
-  $modulepath           = hiera('pe_puppet::master::modulepath', '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules'),
-  $waitforcert          = hiera('pe_puppet::master::waitforcert', '120'),
+  $ca_host              = undef,
+  $ca_port              = '8140',
+  $console_host         = undef,
+  $console_port         = '443',
+  $puppetdb_host        = undef,
+  $puppetdb_port        = '8081',
+  $config_file          = '/etc/puppetlabs/puppet/puppet.conf',
+  $certname             = "pe-internal-puppetmaster.${::clientcert}",
+  $dns_alt_names        = "${::hostname},puppet,puppet.${::domain}",
+  $confdir              = '/etc/puppetlabs/puppet',
+  $inventory_dbname     = 'console_inventory_service',
+  $inventory_dbuser     = 'console',
+  $inventory_dbpassword = undef,
+  $inventory_dbhost     = undef,
+  $reports              = 'https',
+  $external_nodes       = '/etc/puppetlabs/puppet-dashboard/external_node',
+  $modulepath           = '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules',
+  $waitforcert          = '120',
 ) {
   include pe_puppet
   include pe_httpd
@@ -86,7 +85,7 @@ class pe_puppet::master (
   }
 
   # Serve up the contents of this Puppet Master's hiera.yaml
-  file { "$confdir/hiera.yaml":
+  file { "${confdir}/hiera.yaml":
     content => file("${::settings::confdir}/hiera.yaml", '/dev/null'),
   }
 
