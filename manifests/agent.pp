@@ -39,20 +39,18 @@ class pe_puppet::agent (
     value   => $certname,
   }
 
+  $puppet_agent_service = 'pe-puppet'
   case $::osfamily {
     'Debian': {
-      $puppet_agent_service = 'pe-puppet-agent'
       # Debian needs extra enabling
       file_line { 'enable-puppet-agent':
         ensure => present,
-        path   => '/etc/default/pe-puppet-agent',
+        path   => '/etc/default/pe-puppet',
         match  => 'START=',
         line   => 'START=yes',
-        before => Service['pe-puppet-agent'],
+        before => Service[$puppet_agent_service],
       }
     }
-    'RedHat': { $puppet_agent_service = 'pe-puppet' }
-    default: { fail("unexpected osfamily ${::osfamily}") }
   }
 
   service { 'pe-puppet-agent':
