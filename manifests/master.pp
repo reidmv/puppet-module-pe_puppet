@@ -18,6 +18,7 @@ class pe_puppet::master (
   $reports              = 'https',
   $external_nodes       = '/etc/puppetlabs/puppet-dashboard/external_node',
   $modulepath           = '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules',
+  $manifest             = undef,
   $waitforcert          = '120',
 ) {
   include pe_puppet
@@ -129,6 +130,12 @@ class pe_puppet::master (
     }
   }
 
+  if $manifest {
+    ini_setting { 'pe_puppet-master-manifest':
+      setting => 'manifest',
+      value   => $manifest,
+    }
+  }
 
   # inventory_active_record facts terminus settings
   if (!$puppetdb_host or ($puppetdb_host == '')) {
