@@ -70,6 +70,10 @@ class pe_puppet::master (
     content => template('pe_puppet/puppetmaster.conf.erb'),
     require => Puppet_certificate[$certname],
   }
+  file { '/var/opt/lib/pe-puppetmaster':
+    ensure => directory,
+    mode   => '0750',
+  }
   file { '/var/opt/lib/pe-puppetmaster/config.ru':
     ensure => file,
     source => 'puppet:///modules/pe_puppet/config.ru',

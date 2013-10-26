@@ -22,4 +22,11 @@ class pe_puppet (
     value   => 'pe-puppet',
   }
 
+  file { $config_file:
+    ensure => file,
+    owner  => 'pe-puppet',
+    group  => 'pe-puppet',
+    mode   => '640',
+  }
+
 }
