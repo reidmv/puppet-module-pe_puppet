@@ -1,11 +1,16 @@
 class pe_puppet (
-  $config_file = '/etc/puppetlabs/puppet/puppet.conf',
+  $config_file    = '/etc/puppetlabs/puppet/puppet.conf',
+  $puppet_version = installed,
 ) {
 
   Ini_setting {
     ensure  => present,
     path    => $config_file,
     section => 'main',
+  }
+
+  package { 'pe-puppet':
+    ensure => $puppet_version,
   }
 
   # General settings
