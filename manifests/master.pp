@@ -15,7 +15,7 @@ class pe_puppet::master (
   $inventory_dbuser      = 'console',
   $inventory_dbpassword  = undef,
   $inventory_dbhost      = undef,
-  $reports               = 'https',
+  $reports               = 'puppetdb,http',
   $external_nodes        = '/etc/puppetlabs/puppet-dashboard/external_node',
   $modulepath            = '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules',
   $manifest              = undef,
@@ -29,7 +29,7 @@ class pe_puppet::master (
     owner   => 'pe-puppet',
     group   => 'pe-puppet',
     mode    => '0640',
-    require => Package['pe-puppet-master'],
+    require => Package['pe-puppet-server'],
   }
 
   Ini_setting {
@@ -150,36 +150,9 @@ class pe_puppet::master (
     }
   }
 
-  # inventory_active_record facts terminus settings
-  if (!$puppetdb_host or ($puppetdb_host == '')) {
-    ini_setting { 'pe_puppet-master-facts_terminus':
-      setting => 'facts_terminus',
-      value   => 'inventory_active_record',
-    }
-    ini_setting { 'pe_puppet-master-dbadapter':
-      setting => 'dbadapter',
-      value   => 'mysql',
-    }
-    ini_setting { 'pe_puppet-master-dbname':
-      setting => 'dbname',
-      value   => $inventory_dbname,
-    }
-    ini_setting { 'pe_puppet-master-dbuser':
-      setting => 'dbuser',
-      value   => $inventory_dbuser,
-    }
-    if $inventory_dbpassword {
-      ini_setting { 'pe_puppet-master-dbpassword':
-        setting => 'dbpassword',
-        value   => $inventory_dbpassword,
-      }
-    }
-    if $inventory_dbhost {
-      ini_setting { 'pe_puppet-master-dbserver':
-        setting => 'dbserver',
-        value   => $inventory_dbhost,
-      }
-    }
+  class { 'puppetdb::master::config':
+    puppetdb_server => $puppetdb_host,
+    puppetdb_port   => $puppetdb_port,
   }
 
 }
