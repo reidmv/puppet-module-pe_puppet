@@ -80,7 +80,7 @@ class pe_puppet::master (
   }
   file { '/var/opt/lib/pe-puppetmaster':
     ensure  => directory,
-    mode    => '0750',
+    mode    => '0755',
     require => Package['pe-puppet-server'],
   }
   file { '/var/opt/lib/pe-puppetmaster/config.ru':
