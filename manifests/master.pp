@@ -26,10 +26,9 @@ class pe_puppet::master (
   include pe_httpd
 
   File {
-    owner   => 'pe-puppet',
-    group   => 'pe-puppet',
-    mode    => '0640',
-    require => Package['pe-puppet-server'],
+    owner => 'pe-puppet',
+    group => 'pe-puppet',
+    mode  => '0640',
   }
 
   Ini_setting {
@@ -80,27 +79,32 @@ class pe_puppet::master (
     ],
   }
   file { '/var/opt/lib/pe-puppetmaster':
-    ensure => directory,
-    mode   => '0750',
+    ensure  => directory,
+    mode    => '0750',
+    require => Package['pe-puppet-server'],
   }
   file { '/var/opt/lib/pe-puppetmaster/config.ru':
-    ensure => file,
-    source => 'puppet:///modules/pe_puppet/config.ru',
-    notify => Service['pe-httpd'],
+    ensure  => file,
+    source  => 'puppet:///modules/pe_puppet/config.ru',
+    notify  => Service['pe-httpd'],
+    require => Package['pe-puppet-server'],
   }
   file { '/var/opt/lib/pe-puppetmaster/public':
-    ensure => directory,
-    mode   => '0755',
-    notify => Service['pe-httpd'],
+    ensure  => directory,
+    mode    => '0755',
+    notify  => Service['pe-httpd'],
+    require => Package['pe-puppet-server'],
   }
   file { '/var/opt/lib/pe-puppet/reports':
-    ensure => directory,
-    mode   => '0750',
+    ensure  => directory,
+    mode    => '0750',
+    require => Package['pe-puppet-server'],
   }
 
   # Serve up the contents of this Puppet Master's hiera.yaml
   file { "${confdir}/hiera.yaml":
     content => file("${::settings::confdir}/hiera.yaml", '/dev/null'),
+    require => Package['pe-puppet-server'],
   }
 
   # CA configuration
