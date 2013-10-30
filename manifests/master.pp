@@ -21,6 +21,7 @@ class pe_puppet::master (
   $manifest              = undef,
   $waitforcert           = '120',
   $puppet_server_version = installed,
+  $aliases               = split($dns_alt_names, ' '),
 ) {
   include pe_puppet
   include pe_httpd
