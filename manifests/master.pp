@@ -1,27 +1,28 @@
 ## Add inventory service params...
 ## Add storedconfig params (not enabled by default, but is configurable) [bonus points]
 class pe_puppet::master (
-  $ca_host               = undef,
-  $ca_port               = '8140',
-  $console_host          = undef,
-  $console_port          = '443',
-  $puppetdb_host         = undef,
-  $puppetdb_port         = '8081',
-  $config_file           = '/etc/puppetlabs/puppet/puppet.conf',
-  $certname              = "pe-internal-puppetmaster.${::clientcert}",
-  $dns_alt_names         = "${::hostname},puppet,puppet.${::domain}",
-  $confdir               = '/etc/puppetlabs/puppet',
-  $inventory_dbname      = 'console_inventory_service',
-  $inventory_dbuser      = 'console',
-  $inventory_dbpassword  = undef,
-  $inventory_dbhost      = undef,
-  $reports               = 'puppetdb,http',
-  $external_nodes        = '/etc/puppetlabs/puppet-dashboard/external_node',
-  $modulepath            = '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules',
-  $manifest              = undef,
-  $waitforcert           = '120',
-  $puppet_server_version = installed,
-  $aliases               = split($dns_alt_names, ' '),
+  $ca_host                   = undef,
+  $ca_port                   = '8140',
+  $console_host              = undef,
+  $console_port              = '443',
+  $puppetdb_host             = undef,
+  $puppetdb_port             = '8081',
+  $config_file               = '/etc/puppetlabs/puppet/puppet.conf',
+  $certname                  = "pe-internal-puppetmaster.${::clientcert}",
+  $dns_alt_names             = "${::hostname},puppet,puppet.${::domain}",
+  $confdir                   = '/etc/puppetlabs/puppet',
+  $inventory_dbname          = 'console_inventory_service',
+  $inventory_dbuser          = 'console',
+  $inventory_dbpassword      = undef,
+  $inventory_dbhost          = undef,
+  $reports                   = 'puppetdb,http',
+  $external_nodes            = '/etc/puppetlabs/puppet-dashboard/external_node',
+  $modulepath                = '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules',
+  $manifest                  = undef,
+  $waitforcert               = '120',
+  $puppet_server_version     = installed,
+  $puppet_licensecli_version = installed,
+  $aliases                   = split($dns_alt_names, ' '),
 ) {
   include pe_puppet
   include pe_httpd
@@ -40,6 +41,9 @@ class pe_puppet::master (
 
   package { 'pe-puppet-server':
     ensure => $puppet_server_version,
+  }
+  package { 'pe-puppet-license-cli':
+    ensure => $puppet_licensecli_version,
   }
 
   # In order to allow agents to be "graduated" to masters, an alternate
