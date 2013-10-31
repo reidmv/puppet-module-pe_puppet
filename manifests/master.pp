@@ -16,7 +16,7 @@ class pe_puppet::master (
   $inventory_dbpassword      = undef,
   $inventory_dbhost          = undef,
   $reports                   = 'puppetdb,http',
-  $external_nodes            = '/etc/puppetlabs/puppet-dashboard/external_node',
+  $external_nodes            = '/etc/puppetlabs/puppet/external_node',
   $modulepath                = '/etc/puppetlabs/puppet/modules:/opt/puppet/share/puppet/modules',
   $manifest                  = undef,
   $waitforcert               = '120',
@@ -128,7 +128,7 @@ class pe_puppet::master (
 
   # Console configuration
   if $console_host {
-    file { '/etc/puppetlabs/puppet-dashboard/external_node':
+    file { '/etc/puppetlabs/puppet/external_node':
       content => template('pe_puppet/external_node.erb'),
       mode    => '0755',
     }
