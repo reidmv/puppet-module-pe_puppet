@@ -26,6 +26,8 @@ class pe_puppet::master (
 ) {
   include pe_puppet
   include pe_httpd
+  include puppet_auth::defaults
+  include puppet_auth::purge
 
   File {
     owner => 'pe-puppet',
@@ -162,6 +164,14 @@ class pe_puppet::master (
   class { 'puppetdb::master::config':
     puppetdb_server => $puppetdb_host,
     puppetdb_port   => $puppetdb_port,
+  }
+
+  puppet_auth { 'Auth rule for /facts (find, search)':
+    ensure        => present,
+    methods       => ['find', 'search'],
+    allow         => '/^pe-internal-puppetmaster\.?.*$/',
+    authenticated => 'any',
+    priority      => '70',
   }
 
 }

@@ -23,19 +23,12 @@ class pe_puppet::ca inherits pe_puppet::master {
     pe_puppet::ca::autosign { $autosign_servers: }
   }
 
-  include puppet_auth::defaults
-  include puppet_auth::purge
   puppet_auth { 'Auth rule for /certificate_status (find, search, save, destroy)':
-    ensure   => 'present',
-    methods  => ['find', 'search', 'save', 'destroy'],
-    allow    => '/^pe-internal-dashboard\.?.*$/',
-    priority => '70',
-  }
-  puppet_auth { 'Auth rule for /facts (save)':
-    ensure   => present,
-    methods  => ['save'],
-    allow    => '/^pe-internal-puppetmaster\.?.*$/',
-    priority => '70',
+    ensure        => 'present',
+    methods       => ['find', 'search', 'save', 'destroy'],
+    allow         => '/^pe-internal-dashboard\.?.*$/',
+    authenticated => 'yes',
+    priority      => '70',
   }
 
 }
