@@ -23,24 +23,19 @@ class pe_puppet::ca inherits pe_puppet::master {
     pe_puppet::ca::autosign { $autosign_servers: }
   }
 
-  # TODO: Make this more extensible. This implementation rings of hard-coding.
-  #       what is needed is a type/providere for auth_conf entries, that is NOT
-  #       concat-based.
-  include auth_conf
-  include auth_conf::defaults
-  auth_conf::acl { '/certificate_status for multiple dashboards':
-    path       => '/certificate_status',
-    auth       => 'yes',
-    acl_method => [ 'find', 'search', 'save', 'destroy' ],
-    allow      => '/^pe-internal-dashboard\.?.*$/',
-    order      => 084,
+  include puppet_auth::defaults
+  include puppet_auth::purge
+  puppet_auth { 'Auth rule for /certificate_status (find, search, save, destroy)':
+    ensure   => 'present',
+    methods  => ['find', 'search', 'save', 'destroy'],
+    allow    => '/^pe-internal-dashboard\.?.*$/',
+    priority => '70',
   }
-  auth_conf::acl { '/facts for multiple masters':
-    path       => '/facts',
-    auth       => 'yes',
-    acl_method => ['save'],
-    allow      => '/^pe-internal-puppetmaster\.?.*$/',
-    order      => 094,
+  puppet_auth { 'Auth rule for /facts (save)':
+    ensure   => present,
+    methods  => ['save'],
+    allow    => '/^pe-internal-puppetmaster\.?.*$/',
+    priority => '70',
   }
 
 }
