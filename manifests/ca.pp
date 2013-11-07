@@ -26,9 +26,14 @@ class pe_puppet::ca inherits pe_puppet::master {
   puppet_auth { 'Auth rule for /certificate_status (find, search, save, destroy)':
     ensure        => 'present',
     methods       => ['find', 'search', 'save', 'destroy'],
-    allow         => '/^pe-internal-dashboard\.?.*$/',
     authenticated => 'yes',
     priority      => '70',
+  }
+  puppet_auth_allow { '/certificate_status: allow /^pe-internal-dashboard\.?.*$/':
+    ensure  => present,
+    path    => '/certificate_status',
+    allow   => '/^pe-internal-dashboard\.?.*$/',
+    require => Puppet_auth['Auth rule for /certificate_status (find, search, save, destroy)'],
   }
 
 }

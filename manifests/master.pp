@@ -169,9 +169,14 @@ class pe_puppet::master (
   puppet_auth { 'Auth rule for /facts (find, search)':
     ensure        => present,
     methods       => ['find', 'search'],
-    allow         => '/^pe-internal-puppetmaster\.?.*$/',
     authenticated => 'any',
     priority      => '70',
+  }
+  puppet_auth_allow { '/facts: allow /^pe-internal-puppetmaster\.?.*$/':
+    ensure  => present,
+    path    => '/facts',
+    allow   => '/^pe-internal-puppetmaster\.?.*$/',
+    require => Puppet_auth['Auth rule for /facts (find, search)'],
   }
 
 }
