@@ -23,4 +23,9 @@ class pe_puppet::ca inherits pe_puppet::master {
     pe_puppet::ca::autosign { $autosign_servers: }
   }
 
+  # In the event that the agent role is also in effect on this node, it is
+  # necessary to install the certificate denoted above BEFORE starting the
+  # service. Use collectors to define this conditional dependency.
+  Puppet_certificate <| title == $::clientcert     |> ->
+  Service            <| title == 'pe-puppet-agent' |>
 }
