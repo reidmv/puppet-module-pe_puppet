@@ -1,6 +1,9 @@
 Listen 8140
 <VirtualHost *:8140>
-    ServerAlias <%= @aliases -%>
+    ServerName <%= @certname %>
+<% unless [@dns_alt_names].flatten.compact.reject{|x| x=='' }.empty? %>
+    ServerAlias <%= [@dns_alt_names].flatten.join(' ') -%>
+<% end %>
 
     SSLEngine on
     SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP

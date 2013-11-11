@@ -9,7 +9,6 @@ class pe_puppet::master (
   $puppetdb_port              = '8081',
   $config_file                = '/etc/puppetlabs/puppet/puppet.conf',
   $certname                   = "pe-internal-puppetmaster.${::clientcert}",
-  $dns_alt_names              = "${::hostname},puppet,puppet.${::domain}",
   $confdir                    = '/etc/puppetlabs/puppet',
   $inventory_dbname           = 'console_inventory_service',
   $inventory_dbuser           = 'console',
@@ -23,7 +22,12 @@ class pe_puppet::master (
   $puppet_server_version      = installed,
   $puppet_licensecli_version  = installed,
   $puppetdb_strict_validation = true,
-  $aliases                    = split($dns_alt_names, ' '),
+  $dns_alt_names              = [
+    $::hostname,
+    $::fqdn,
+    'puppet',
+    "puppet.${::domain}",
+  ],
 ) {
   include pe_puppet
   include pe_httpd
@@ -77,6 +81,7 @@ class pe_puppet::master (
 
   # Template uses:
   # - $certname
+  # - $dns_alt_names
   pe_httpd::vhost { 'puppetmaster':
     content => template('pe_puppet/puppetmaster.conf.erb'),
     require => [
