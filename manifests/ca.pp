@@ -15,7 +15,8 @@ class pe_puppet::ca inherits pe_puppet::master {
   # Since this is the CA, it may well be created by running `puppet apply`.
   # Make the cert real.
   puppet_certificate { $::clientcert:
-    ensure => present,
+    ensure      => present,
+    ca_location => $pe_puppet::ca_location,
   }
 
   #check to see if we 

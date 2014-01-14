@@ -1,6 +1,7 @@
 class pe_puppet (
   $config_file    = '/etc/puppetlabs/puppet/puppet.conf',
   $puppet_version = installed,
+  $ca_location    = undef,
 ) {
 
   Ini_setting {

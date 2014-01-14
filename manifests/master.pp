@@ -58,6 +58,7 @@ class pe_puppet::master (
     ensure        => present,
     dns_alt_names => $dns_alt_names,
     waitforcert   => $waitforcert,
+    ca_location   => $pe_puppet::ca_location,
   }
   ini_setting { 'pe_puppet-master-certname':
     setting => 'certname',
