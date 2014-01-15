@@ -16,7 +16,7 @@ class pe_puppet::ca inherits pe_puppet::master {
   # Make the cert real.
   puppet_certificate { $::clientcert:
     ensure      => present,
-    ca_location => $pe_puppet::ca_location,
+    ca_location => $pe_puppet::master::ca_location,
   }
 
   #check to see if we 

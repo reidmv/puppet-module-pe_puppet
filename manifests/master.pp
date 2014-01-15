@@ -22,14 +22,14 @@ class pe_puppet::master (
   $puppet_server_version      = installed,
   $puppet_licensecli_version  = installed,
   $puppetdb_strict_validation = true,
+  $ca_location                = $pe_puppet::ca_location,
   $dns_alt_names              = [
     $::hostname,
     $::fqdn,
     'puppet',
     "puppet.${::domain}",
   ],
-) {
-  include pe_puppet
+) inherits pe_puppet {
   include pe_httpd
 
   File {
@@ -58,7 +58,7 @@ class pe_puppet::master (
     ensure        => present,
     dns_alt_names => $dns_alt_names,
     waitforcert   => $waitforcert,
-    ca_location   => $pe_puppet::ca_location,
+    ca_location   => $ca_location,
   }
   ini_setting { 'pe_puppet-master-certname':
     setting => 'certname',
